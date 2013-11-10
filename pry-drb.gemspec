@@ -13,6 +13,8 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version = '>= 1.8.7'
 
+  gem.add_dependency 'pry'
+
   gem.files = `git ls-files`.split("\n")
   gem.executables = "pry-drb"
 end
