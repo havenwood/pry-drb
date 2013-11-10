@@ -1,0 +1,74 @@
+#!/usr/bin/env ruby
+require 'drb'
+
+module PryDrb
+  class << self
+    def call
+      setup
+
+      if @params && @params != 'start'
+        if @params == 'stop'
+          stop
+        elsif @params == 'status'
+          status
+        elsif @params.include? '-v'
+          version
+        else
+          help
+        end
+      else
+        start
+      end
+    end
+    
+    private
+    
+    def setup
+      @processes = `pgrep -f drb`.split
+      @params = ARGV.first
+    end
+    
+    def version
+      puts 'drb 0.0.1'
+    end
+    
+    def stop
+      if @processes.size > 1
+        puts 'Stopping drb service.'
+        `kill -9 #{@processes.join ' '}`
+      else
+        puts 'No drb service running.'
+      end
+    end
+    
+    def status
+      if @processes.size > 1
+        puts 'Running.'
+      else
+        puts 'Stopped.'
+      end
+    end
+    
+    def help
+      puts 'Usage:'
+      puts "\tdrb -h/--help"
+      puts "\tdrb -v/--version"
+      puts "\tdrb [start|stop|status]"
+    end
+    
+    def start
+      if @processes.size == 1
+        puts 'Starting drb service.'
+        fork do
+          DRb.start_service 'druby://localhost:55555', {}
+          DRb.thread.join
+        end
+        Process.daemon
+      else
+        abort "Drb service already running."
+      end
+    end
+  end
+end
+
+PryDrb.call
