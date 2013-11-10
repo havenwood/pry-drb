@@ -58,7 +58,7 @@ module PryDrb
     end
     
     def start
-      if @processes.size == 1
+      if @processes.size <= 1
         puts 'Starting drb service.'
         fork do
           DRb.start_service 'druby://localhost:55555', {}
