@@ -1,6 +1,9 @@
+# -*- encoding: utf-8 -*-
+require File.expand_path('../lib/pry-drb/version', __FILE__)
+
 Gem::Specification.new do |gem|
   gem.name = 'pry-drb'
-  gem.version = '0.1'
+  gem.version = PryDrb::VERSION
 
   gem.summary = 'Store objects persistently in your pry session!'
   gem.description = "Uses DRb to let you stash variables across pry sessions."
