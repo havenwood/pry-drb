@@ -1,4 +1,6 @@
+#!/usr/bin/env ruby
 require 'drb'
+require 'pry-drb'
 
 module PryDrb
   class << self
@@ -28,7 +30,7 @@ module PryDrb
     end
     
     def version
-      puts 'drb 0.0.1'
+      puts PryDrb::VERSION
     end
     
     def stop
